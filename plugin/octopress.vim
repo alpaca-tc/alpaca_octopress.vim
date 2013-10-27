@@ -38,7 +38,7 @@ set cpo&vim
 let g:octopress#rake_command = get(g:, 'octopress#rake_command', 'rake')
 let g:octopress#project_url = get(g:, 'octopress#project_url', '')
 
-command! -bang -nargs=* -complete=customlist,octpress#complete Octopress call octpress#execute(<f-args>)
+command! -bang -nargs=* -complete=customlist,octopress#complete Octopress call octopress#execute(<f-args>)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

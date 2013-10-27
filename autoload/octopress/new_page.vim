@@ -1,4 +1,4 @@
-function! octpress#new_page#execute(options) "{{{
+function! octopress#new_page#execute(options)
   if len(a:options) == 0
     echoerr 'Missing page_title'
     return
@@ -6,7 +6,7 @@ function! octpress#new_page#execute(options) "{{{
     let title = a:options[0]
   endif
 
-  let rake_output = octpress#system('new_page\[' . title . '\]')
+  let rake_output = octopress#system('new_page\[' . title . '\]')
   let page_path = ''
 
   for line in split(rake_output, "\n")
@@ -18,7 +18,8 @@ function! octpress#new_page#execute(options) "{{{
 
   if filereadable(page_path)
     edit `=page_path`
+    call octopress#print_message('Edit ' . page_path)
   else
-    echoerr 'Unable to find path to new page file'
+    call octopress#print_error('Unable to find path to new page file')
   endif
-endfunction"}}}
+endfunction

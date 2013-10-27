@@ -1,13 +1,17 @@
-function! octpress#system(...) "{{{
+function! octopress#system(...) "{{{
   let commands = a:000
   let command = join(commands, ' ')
   let command = g:octopress#rake_command . ' ' . command
 
-  echomsg command . '...'
-  return system(command)
+  call octopress#print_message(command . '...')
+  let result = system(command)
+  call octopress#print_message(result)
+
+  let g:huga = result
+  return result
 endfunction"}}}
 
-function! octpress#complete(arg_lead, cmd_line, cursor_pos) "{{{
+function! octopress#complete(arg_lead, cmd_line, cursor_pos) "{{{
   if !exists('s:command_list')
     let s:command_list = [
           \ 'new_post',
@@ -17,32 +21,28 @@ function! octpress#complete(arg_lead, cmd_line, cursor_pos) "{{{
           \ 'gen_deploy',
           \ 'generate',
           \ 'push',
-          \ 'rsync'
+          \ 'rsync',
           \ ]
   endif
 
   return filter(copy(s:command_list), 'v:val =~ a:arg_lead')
 endfunction"}}}
 
-function! octpress#execute(task, ...) "{{{
-  redraw!
-
+function! octopress#execute(task, ...) "{{{
   if a:task =~# '^\(new_post\|watch\|preview\)$'
-    return octpress#{a:task}#execute(a:000)
+    return octopress#{a:task}#execute(a:000)
   elseif a:task =~# '^\(generate\|deploy\|gen_deploy\|push\|rsync\|clean\|\)$'
-    " if a:task =~# '^\(deploy\|gen_deploy\|rsync\)$'
-    "   set noswapfile
-    " endif
-
-    let result = octpress#system(a:task)
-    for message in split(result, '\n')
-      echomsg message
-    endfor
+    call octopress#system(a:task)
+  elseif empty(a:task) && !empty(g:octopress#project_url)
+    if isdirectory(g:octopress#project_url)
+      lcd `=g:octopress#project_url`
+      call octopress#print_message('Current directory is ' . g:octopress#project_url)
+    else
+      call octopress#print_error('Invalid value g:octopress#project_url:' . g:octopress#project_url)
+    endif
   else
-    echo "I don't know about that Octopress task."
+    call octopress#print_error("I don't know about that Octopress task.")
   endif
-
-  redraw!
 endfunction"}}}
 
 " Print message "{{{
@@ -60,20 +60,20 @@ function! s:redraw_echo(expr) "{{{
   endfor
 endfunction"}}}
 function! s:msg2list(message) "{{{
-  return type(a:expr) ==# type([]) ? a:expr : split(a:expr, '\n')
+  return type(a:message) ==# type([]) ? a:message : split(a:message, '\n')
 endfunction"}}}
 
-function! octpress#print_error(message) "{{{
+function! octopress#print_error(message) "{{{
   let messages = s:msg2list(a:message)
   for mes in messages
     echohl WarningMsg | echomsg mes | echohl None
   endfor
 endfunction"}}}
-function! octpress#print_message(message) "{{{
+function! octopress#print_message(message) "{{{
   let message = s:msg2list(a:message)
   echohl Comment | call s:redraw_echo(message) | echohl None
 endfunction"}}}
-function! octpress#clear_message() "{{{
+function! octopress#clear_message() "{{{
   redraw
 endfunction"}}}
 "}}}
