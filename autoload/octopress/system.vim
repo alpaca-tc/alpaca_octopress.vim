@@ -37,10 +37,9 @@ endfunction"}}}
 "}}}
 
 function! s:synchronism_system(command, callbacks) "{{{
-  let result = s:P.system(a:command)
-  call s:callback(result, a:callbacks, 'done')
-
-  return result
+  let instance = s:WatchSync.new(a:command, a:callbacks)
+  call instance.read()
+  call instance.done()
 endfunction"}}}
 
 function! s:asynchronism_system(command, callbacks) "{{{
@@ -51,14 +50,40 @@ function! octopress#system#execute(...) "{{{
   let [command, callback] = s:build_command(a:000)
   let g:octopress#debug.last_execute = [command, callback]
 
-  if s:P.has_vimproc() && g:octopress#system#async
-    return s:synchronism_system(command, callback)
-  else
+  if s:P.has_vimproc() && g:octopress#system#async == 1
     return s:asynchronism_system(command, callback)
+  else
+    return s:synchronism_system(command, callback)
   endif
 endfunction"}}}
 
-" Watching process"{{{
+" Watching process for sync
+let s:WatchSync = {}
+function! s:WatchSync.new(command, callbacks) "{{{
+  let instance = deepcopy(self)
+  call remove(instance, 'new')
+
+  let instance.command    = a:command
+  let instance.callbacks  = a:callbacks
+
+  return instance
+endfunction"}}}
+
+function! s:WatchSync.read() "{{{
+  if !has_key(self, 'result')
+    call octopress#message#print(self.command . '...')
+    let self.result = s:P.system(self.command)
+  endif
+
+  return [self.result, '', 'inactive']
+endfunction"}}}
+
+function! s:WatchSync.done() "{{{
+  call octopress#message#print('Done!!! ' . self.command)
+  call s:callback(self, 'done')
+endfunction"}}}
+
+" Watching process for async {{{
 let s:Watch = {
       \ 'instances' : {}
       \ }
