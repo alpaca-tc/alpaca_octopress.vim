@@ -35,7 +35,7 @@ set cpo&vim
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:octopress#rake_command = get(g:, 'octopress#rake_command', 'rake')
+let g:octopress#rake_command = get(g:, 'octopress#rake_command', 'bundle exec rake')
 let g:octopress#project_url = get(g:, 'octopress#project_url', '')
 let g:octopress#system#async = get(g:, 'octopress#system#async', 0)
 let g:octopress#open = get(g:, 'octopress#open', 'tabnew')
