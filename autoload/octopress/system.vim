@@ -31,7 +31,7 @@ function! s:callback(instance, action) "{{{
   let callbacks = a:instance.callbacks
 
   if type(callbacks) == type({}) && has_key(callbacks, a:action)
-    call {callbacks[a:action]}(a:instance.read())
+    call {callbacks[a:action]}(a:instance.read(), a:instance)
   endif
 endfunction"}}}
 "}}}
@@ -105,7 +105,7 @@ function! s:Watch.read() "{{{
 endfunction"}}}
 
 function! s:Watch.done() "{{{
-  call octopress#message#print('Done!!!')
+  call octopress#message#print('Done!!! ' . self.command)
   call remove(s:Watch.instances, self.pid)
   call s:callback(self, 'done')
   call s:PM.stop(self.pid)

@@ -8,7 +8,7 @@ function! octopress#command#new_post#execute(options) "{{{
 
   let callback = {
         \ 'done' : 'octopress#command#concern#open',
-        \ 'in_process' : 'octopress#command#concern#show_progress',
+        \ 'in_process' : 'octopress#command#concern#check_override',
         \ }
   let command = 'new_post\[' . title . '\]'
 
