@@ -11,7 +11,7 @@ let s:command_list = [
       \ ]
 
 function! octopress#complete(arg_lead, cmd_line, cursor_pos) "{{{
-  return filter(copy(s:command_list), 'v:val =~ a:arg_lead')
+  return filter(copy(s:command_list), 'v:val =~ "^" . a:arg_lead')
 endfunction"}}}
 
 function! octopress#execute(task, ...) "{{{
