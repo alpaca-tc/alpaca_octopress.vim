@@ -19,7 +19,6 @@ let hooks = neobundle#get_hooks('alpaca_octopress.vim')
 function! hooks.on_source(bundle) "{{{
   let g:octopress#project_url = expand('~/project/octopress')
   let g:octopress#url = 'http://alpaca-tc.github.io'
-  " let g:octopress#rake_command = 'cd ' . g:octopress#project_url . ' && bundle exec rake'
   let g:octopress#system#async = 1
   let g:octopress#open = 'vnew'
 endfunction"}}}

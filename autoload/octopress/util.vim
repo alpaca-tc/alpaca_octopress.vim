@@ -10,7 +10,7 @@ function! octopress#util#input(message, ...) "{{{
 endfunction"}}}
 
 function! octopress#util#open(path) "{{{
-  let path = g:octopress#project_url . '/' . a:path
+  let path = g:octopress#project_path . '/' . a:path
 
   if filereadable(path)
     execute g:octopress#open path

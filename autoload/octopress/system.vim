@@ -23,9 +23,17 @@ endfunction"}}}
 function! octopress#system#execute(...) "{{{
   let [command, callback] = s:build_command(a:000)
 
-  if s:P.has_vimproc() && g:octopress#system#async == 1
-    return octopress#system#asynchronous#new(command, callback)
-  else
-    return octopress#system#synchronous#new(command, callback)
-  endif
+  let current_dir = getcwd()
+  lcd `=g:octopress#project_path`
+  try
+    if s:P.has_vimproc() && g:octopress#system#async == 1
+      return octopress#system#asynchronous#new(command, callback)
+    else
+      return octopress#system#synchronous#new(command, callback)
+    endif
+  catch /.*/
+    call octopress#message#print_error(v:errmsg)
+  finally
+    lcd `=current_dir`
+  endtry
 endfunction"}}}
