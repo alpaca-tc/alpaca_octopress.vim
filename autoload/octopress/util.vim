@@ -12,8 +12,9 @@ endfunction"}}}
 function! octopress#util#open(path) "{{{
   let path = g:octopress#project_url . '/' . a:path
 
-  if filereadable(a:path)
+  if filereadable(path)
     execute g:octopress#open path
+    doautocmd BufNewFile
     call octopress#message#print('Edit :' . path)
   else
     call octopress#message#error('Unable to find path to new page file')

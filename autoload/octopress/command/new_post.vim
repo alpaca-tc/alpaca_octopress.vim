@@ -6,11 +6,10 @@ function! octopress#command#new_post#execute(options) "{{{
     let title = a:options[0]
   endif
 
+  let command = 'new_post\[' . title . '\]'
   let callback = {
         \ 'done' : 'octopress#command#concern#open',
-        \ 'in_process' : 'octopress#command#concern#check_override',
         \ }
-  let command = 'new_post\[' . title . '\]'
 
   call octopress#system#execute(command, callback)
 endfunction"}}}

@@ -2,8 +2,10 @@ let s:PM = vital#of('alpaca_octopress.vim').import('ProcessManager')
 
 function! octopress#command#concern#open(result, ...) "{{{
   let path = ''
+  let result = join([a:result[0], a:result[1]], "\n")
+  let g:result = result
 
-  for line in split(join([a:result[0], a:result[1]], "\n"), "\n")
+  for line in split(result, "\n")
     if line =~? 'Creating new \(post\|page\):'
       let path = substitute(line, '^Creating new \(post\|page\):\s*', '', '')
       break

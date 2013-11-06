@@ -9,7 +9,6 @@ function! octopress#command#new_page#execute(options) "{{{
   let command = 'new_page\[' . title . '\]'
   let callback = {
         \ 'done' : 'octopress#command#concern#open',
-        \ 'in_process' : 'octopress#command#concern#check_override',
         \ }
 
   call octopress#system#execute(command, callback)
