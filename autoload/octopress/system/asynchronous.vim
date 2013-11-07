@@ -65,8 +65,18 @@ function! s:start_watching() "{{{
 
   augroup OctopressWatching
     autocmd!
-    autocmd CursorHold * call s:check_status()
+    autocmd CursorHold,CursorHoldI * call s:check_status()
+    autocmd VimLeavePre * call octopress#system#asynchronous#killall()
   augroup END
 endfunction"}}}
-
 call s:start_watching()
+
+function! octopress#system#asynchronous#killall() "{{{
+  let pids = keys(s:Watch.instances)
+  let s:Watch.instances = {}
+  for pid in pids
+    call s:PM.stop(pid, 2)
+  endfor
+
+  call octopress#message#print('[AlpacaOctopress] Kill process: ' . join(pids, ', '))
+endfunction"}}}

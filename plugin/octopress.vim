@@ -40,5 +40,9 @@ let g:octopress#debug = {}
 
 command! -bang -nargs=* -complete=customlist,octopress#complete Octopress call octopress#execute(<f-args>)
 
+if g:octopress#system#async
+  command! -nargs=0 OctopressKillAllProcess call octopress#system#asynchronous#killall()
+endif
+
 let &cpo = s:save_cpo
 unlet s:save_cpo

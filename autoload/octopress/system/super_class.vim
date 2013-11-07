@@ -26,9 +26,7 @@ function! s:Watch.done() "{{{
 endfunction"}}}
 
 function! s:Watch.in_process() "{{{
-  if !self.do_callback('in_process')
-    call octopress#message#print(self.command . '...')
-  endif
+  call self.do_callback('in_process')
 endfunction"}}}
 
 function! s:Watch.read() "{{{

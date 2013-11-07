@@ -8,7 +8,8 @@ let s:command_list = [
       \ 'push',
       \ 'rsync',
       \ 'cd',
-      \ 'open'
+      \ 'open',
+      \ 'preview',
       \ ]
 
 function! octopress#complete(arg_lead, cmd_line, cursor_pos) "{{{
@@ -16,7 +17,7 @@ function! octopress#complete(arg_lead, cmd_line, cursor_pos) "{{{
 endfunction"}}}
 
 function! octopress#execute(task, ...) "{{{
-  if a:task =~# '^\(new_post\|new_page\|watch\|preview\|cd\|open\)$'
+  if a:task =~# '^\(new_post\|new_page\|watch\|preview\|cd\|open\|preview\)$'
     return octopress#command#{a:task}#execute(a:000)
   elseif a:task =~# '^\(generate\|deploy\|gen_deploy\|push\|rsync\|clean\|\)$'
     call octopress#system#execute(a:task)

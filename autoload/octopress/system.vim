@@ -23,6 +23,8 @@ endfunction"}}}
 function! octopress#system#execute(...) "{{{
   let [command, callback] = s:build_command(a:000)
 
+  call octopress#message#print(command . '...')
+
   let current_dir = getcwd()
   lcd `=g:octopress#project_path`
   try

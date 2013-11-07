@@ -15,6 +15,10 @@ function! octopress#command#concern#open(result, ...) "{{{
   call octopress#util#open(path)
 endfunction"}}}
 
+function! octopress#command#concern#show_running_command(result, ...)
+  call octopress#message#print(a:1.command . '...')
+endfunction
+
 function! octopress#command#concern#show_progress(result, ...) "{{{
   call octopress#message#print(join([a:result[0], a:result[1]], "\n"))
 endfunction"}}}

@@ -1,4 +1,5 @@
 function! octopress#command#watch#execute(...)
-  " TODO
-  call octopress#print_error('TODO')
+  let command = 'watch'
+  let callback = {}
+  call octopress#system#execute(command, callback)
 endfunction

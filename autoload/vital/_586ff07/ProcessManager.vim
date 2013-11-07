@@ -34,9 +34,10 @@ function! s:new(cmd)
   return s:_auto_label
 endfunction
 
-function! s:stop(i)
+function! s:stop(i, ...)
+  let sig = len(a:000) > 0 ? a:1 : 8
   let p = s:_processes[a:i]
-  call p.kill(9)
+  call p.kill(sig)
   " call p.waitpid()
   unlet s:_processes[a:i]
 endfunction
