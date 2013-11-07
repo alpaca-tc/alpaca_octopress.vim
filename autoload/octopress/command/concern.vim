@@ -29,7 +29,7 @@ function! octopress#command#concern#check_override(result, instance)
     let input = octopress#util#input('Do you want to overwrite? [y/n]: ')
 
     if input == 'y'
-      call octopress#message#print('Overrite')
+      call octopress#message#print('Overwrite')
       call s:PM.writeln(a:instance.pid, 'y')
     else
       call octopress#message#error('Cancel')
