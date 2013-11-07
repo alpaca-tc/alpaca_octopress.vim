@@ -32,10 +32,15 @@ function! s:Watch.read() "{{{
 endfunction"}}}
 
 function! s:Watch.done() "{{{
-  let g:read_all = self.read_all()
   call octopress#message#print('Done!!! ' . self.command)
   call remove(s:Watch.instances, self.pid)
   call self.do_callback('done')
+  call s:PM.stop(self.pid)
+endfunction"}}}
+
+function! s:Watch.destroy() "{{{
+  call octopress#message#print('Timeout: ' . self.command)
+  call remove(s:Watch.instances, self.pid)
   call s:PM.stop(self.pid)
 endfunction"}}}
 
@@ -53,6 +58,8 @@ function! s:check_status() "{{{
       call instance.in_process()
     elseif status == 'inactive'
       call instance.done()
+    elseif status == 'timeout'
+      call instance.destroy()
     endif
   endfor
 endfunction"}}}
